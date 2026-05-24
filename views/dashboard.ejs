@@ -1,0 +1,1472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Zoro V3 Dashboard — Manage your Discord servers">
+  <title>Dashboard | <%= user.username %> — Zoro V3</title>
+  <link rel="shortcut icon" href="/images/phoenix-logo.png" type="image/png">
+  <link rel="stylesheet" href="/css/dashboard.css">
+</head>
+<body>
+
+<!-- Mobile overlay -->
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+<!-- Mobile sidebar toggle -->
+<button class="sidebar-toggle" id="sidebar-toggle" aria-label="Open sidebar">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+    <line x1="3" y1="12" x2="21" y2="12"/>
+    <line x1="3" y1="6" x2="21" y2="6"/>
+    <line x1="3" y1="18" x2="21" y2="18"/>
+  </svg>
+</button>
+
+<div class="dash-layout">
+
+  <!-- ======== SIDEBAR ======== -->
+  <aside class="dash-sidebar" id="dash-sidebar">
+
+    <!-- Brand -->
+    <div class="sidebar-brand">
+      <img src="/images/phoenix-logo.png" alt="Team Phoenix">
+      <div class="sidebar-brand-text">
+        <span class="sidebar-brand-name">ZORO V3</span>
+        <span class="sidebar-brand-tag">Team Phoenix</span>
+      </div>
+    </div>
+
+    <!-- User block -->
+    <div class="sidebar-user">
+      <img
+        src="https://cdn.discordapp.com/avatars/<%= user.id %>/<%= user.avatar %>.png?size=128"
+        alt="<%= user.username %>"
+        class="sidebar-avatar"
+        onerror="this.src='/images/phoenix-logo.png'"
+      >
+      <div class="sidebar-user-info">
+        <div class="sidebar-username"><%= user.username %></div>
+        <div class="sidebar-discriminator">#<%= user.discriminator %></div>
+      </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="sidebar-nav">
+      <div class="sidebar-nav-label">Navigation</div>
+
+      <a href="/dashboard" class="nav-item active" id="nav-servers">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="2" y="3" width="20" height="14" rx="2"/>
+          <line x1="8" y1="21" x2="16" y2="21"/>
+          <line x1="12" y1="17" x2="12" y2="21"/>
+        </svg>
+        My Servers
+      </a>
+
+      <a href="/" class="nav-item" id="nav-home">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+          <polyline points="9 22 9 12 15 12 15 22"/>
+        </svg>
+        Home
+      </a>
+
+      <div class="sidebar-nav-label" style="margin-top:12px;">Support</div>
+
+      <a href="https://discord.gg/your-server" target="_blank" class="nav-item" id="nav-support">
+        <!-- Discord Clyde icon -->
+        <svg viewBox="0 0 127.14 96.36" fill="currentColor" xmlns="http://www.w3.org/2000/svg" style="width:18px;height:18px;flex-shrink:0;color:#7289da;">
+          <path d="M107.7,8.07A105.15,105.15,0,0,0,81.47,0a72.06,72.06,0,0,0-3.36,6.83A97.68,97.68,0,0,0,49,6.83,72.37,72.37,0,0,0,45.64,0,105.89,105.89,0,0,0,19.39,8.09C2.79,32.65-1.71,56.6.54,80.21h0A105.73,105.73,0,0,0,32.71,96.36,77.7,77.7,0,0,0,39.6,85.25a68.42,68.42,0,0,1-10.85-5.18c.91-.66,1.8-1.34,2.66-2a75.57,75.57,0,0,0,64.32,0c.87.71,1.76,1.39,2.66,2a68.68,68.68,0,0,1-10.87,5.19,77,77,0,0,0,6.89,11.1A105.25,105.25,0,0,0,126.6,80.22h0C129.24,52.84,122.09,29.11,107.7,8.07ZM42.45,65.69C36.18,65.69,31,60,31,53s5-12.74,11.43-12.74S54,46,53.89,53,48.84,65.69,42.45,65.69Zm42.24,0C78.41,65.69,73.25,60,73.25,53s5-12.74,11.44-12.74S96.23,46,96.12,53,91.08,65.69,84.69,65.69Z"/>
+        </svg>
+        Discord Server
+      </a>
+    </nav>
+
+    <!-- Logout -->
+    <div class="sidebar-bottom">
+      <a href="/logout" class="btn-logout" id="btn-logout">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+          <polyline points="16 17 21 12 16 7"/>
+          <line x1="21" y1="12" x2="9" y2="12"/>
+        </svg>
+        Logout
+      </a>
+    </div>
+  </aside>
+
+  <!-- ======== MAIN ======== -->
+  <main class="dash-main">
+
+    <!-- Top Bar -->
+    <header class="dash-topbar">
+      <div>
+        <div class="topbar-title">Dashboard</div>
+        <div class="topbar-subtitle">Manage your Discord servers</div>
+      </div>
+      <div class="topbar-badge">
+        <span class="status-dot"></span>
+        Bot Online
+      </div>
+    </header>
+
+    <!-- Content -->
+    <div class="dash-content">
+
+      <!-- Welcome Banner -->
+      <div class="welcome-banner">
+        <img
+          src="https://cdn.discordapp.com/avatars/<%= user.id %>/<%= user.avatar %>.png?size=256"
+          alt="<%= user.username %>"
+          class="welcome-avatar"
+          onerror="this.src='/images/phoenix-logo.png'"
+        >
+        <div class="welcome-text">
+          <h2>Welcome back, <span><%= user.username %></span>!</h2>
+          <p>Select a server below to manage your bot settings and preferences.</p>
+        </div>
+      </div>
+
+      <!-- Stats Grid -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-card-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+              <circle cx="9" cy="7" r="4"/>
+              <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+              <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+            </svg>
+          </div>
+          <div class="stat-card-value"><%= guilds.length %></div>
+          <div class="stat-card-label">Your Servers</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-card-icon" style="background:rgba(87,242,135,0.1);">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#57f287" stroke-width="2">
+              <polyline points="20 6 9 17 4 12"/>
+            </svg>
+          </div>
+          <div class="stat-card-value" style="color:#57f287;"><%= guilds.filter(g => g.hasBot).length %></div>
+          <div class="stat-card-label">Bot Active</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-card-icon" style="background:rgba(254,231,92,0.1);">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#fee75c" stroke-width="2">
+              <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+            </svg>
+          </div>
+          <div class="stat-card-value" style="color:#fee75c;">11</div>
+          <div class="stat-card-label">Commands</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-card-icon" style="background:rgba(88,101,242,0.15);">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#5865f2" stroke-width="2">
+              <circle cx="12" cy="12" r="10"/>
+              <polyline points="12 6 12 12 16 14"/>
+            </svg>
+          </div>
+          <div class="stat-card-value" style="color:#5865f2;">24/7</div>
+          <div class="stat-card-label">Uptime</div>
+        </div>
+      </div>
+
+      <!-- Guilds Section -->
+      <div class="section-header">
+        <div class="section-title">Your Servers</div>
+        <div class="section-count"><%= guilds.length %> servers</div>
+      </div>
+
+      <div class="guilds-grid" id="guilds-grid">
+
+        <% if (guilds.length === 0) { %>
+        <div class="empty-state">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <rect x="2" y="3" width="20" height="14" rx="2"/>
+            <line x1="8" y1="21" x2="16" y2="21"/>
+            <line x1="12" y1="17" x2="12" y2="21"/>
+          </svg>
+          <p>No servers found where you have Manage Server permissions.</p>
+        </div>
+        <% } %>
+
+        <% guilds.forEach((guild, i) => { %>
+        <div class="guild-card" style="--anim-delay: <%= i * 0.06 %>s"
+          data-id="<%= guild.id %>"
+          data-name="<%= encodeURIComponent(guild.name) %>"
+          data-icon="<%= guild.icon %>"
+          data-bot="<%= guild.hasBot %>"
+          onclick="openServerPanel(this.dataset.id, decodeURIComponent(this.dataset.name), this.dataset.icon, this.dataset.bot)">
+
+          <!-- Top Row: Icon + Name + Status -->
+          <div class="guild-card-top">
+            <div class="guild-icon">
+              <% if (guild.icon) { %>
+                <img
+                  src="https://cdn.discordapp.com/icons/<%= guild.id %>/<%= guild.icon %>.png?size=128"
+                  alt="<%= guild.name %>"
+                  onerror="this.parentElement.innerHTML='<%= guild.name.charAt(0) %>'"
+                >
+              <% } else { %>
+                <%= guild.name.charAt(0).toUpperCase() %>
+              <% } %>
+            </div>
+
+            <div class="guild-info">
+              <div class="guild-name" title="<%= guild.name %>"><%= guild.name %></div>
+              <% if (guild.hasBot) { %>
+                <div class="guild-status has-bot">
+                  <span class="guild-status-dot"></span>
+                  Bot Active
+                </div>
+              <% } else { %>
+                <div class="guild-status no-bot">
+                  <span class="guild-status-dot"></span>
+                  Bot Not Added
+                </div>
+              <% } %>
+            </div>
+          </div>
+
+          <div class="guild-divider"></div>
+
+          <!-- Automod Toggle -->
+          <div class="toggle-row">
+            <div class="toggle-label-group">
+              <div class="toggle-label">Auto Moderation</div>
+              <div class="toggle-desc">Auto-delete rule-breaking messages</div>
+            </div>
+
+            <label class="toggle-switch">
+              <input
+                type="checkbox"
+                id="automod-<%= guild.id %>"
+                <%= guild.automodEnabled ? 'checked' : '' %>
+                <%= !guild.hasBot ? 'disabled' : '' %>
+                onchange="toggleAutomod('<%= guild.id %>', this.checked)"
+              >
+              <span class="toggle-track"></span>
+            </label>
+          </div>
+
+          <% if (!guild.hasBot) { %>
+          <div style="text-align:center;">
+            <a
+              href="https://discord.com/oauth2/authorize?client_id=<%= process.env.DISCORD_CLIENT_ID || '0' %>&permissions=8&scope=bot%20applications.commands&guild_id=<%= guild.id %>"
+              target="_blank"
+              style="display:inline-block; font-size:12px; color:#5865f2; text-decoration:underline; margin-top:-4px;"
+            >
+              + Add Zoro to this server
+            </a>
+          </div>
+          <% } %>
+
+        </div>
+        <% }); %>
+      </div>
+
+    </div><!-- /.dash-content -->
+  </main>
+
+</div><!-- /.dash-layout -->
+
+<!-- Server Settings Panel -->
+<div class="panel-overlay" id="panel-overlay" onclick="closeServerPanel()"></div>
+<aside class="server-panel" id="server-panel">
+  <div class="sp-header">
+    <div class="sp-guild-info">
+      <div class="sp-guild-icon" id="sp-guild-icon"></div>
+      <div>
+        <div class="sp-guild-name" id="sp-guild-name">Server</div>
+        <div class="sp-guild-id" id="sp-guild-id"></div>
+      </div>
+    </div>
+    <button class="sp-close" onclick="closeServerPanel()" aria-label="Close">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+  </div>
+
+  <!-- Inner: vertical nav + content -->
+  <div class="sp-inner">
+
+    <!-- Vertical Nav -->
+    <nav class="sp-tabs">
+
+      <div class="sp-nav-group-label">General</div>
+      <button class="sp-tab active" data-tab="commands" onclick="switchTab('commands')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+        <span>Commands</span>
+      </button>
+      <button class="sp-tab" data-tab="automod" onclick="switchTab('automod')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        <span>Auto Mod</span>
+      </button>
+      <button class="sp-tab" data-tab="wordfilter" onclick="switchTab('wordfilter')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+        <span>Word Filter</span>
+      </button>
+      <button class="sp-tab" data-tab="warnings" onclick="switchTab('warnings')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        <span>Warnings</span>
+      </button>
+
+      <div class="sp-nav-group-label">Features</div>
+      <button class="sp-tab" data-tab="welcome" onclick="switchTab('welcome')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        <span>Welcome</span>
+      </button>
+      <button class="sp-tab" data-tab="leveling" onclick="switchTab('leveling')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+        <span>Leveling</span>
+      </button>
+      <button class="sp-tab" data-tab="verification" onclick="switchTab('verification')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+        <span>Verification</span>
+      </button>
+      <button class="sp-tab" data-tab="tickets" onclick="switchTab('tickets')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2z"/></svg>
+        <span>Tickets</span>
+      </button>
+      <button class="sp-tab" data-tab="suggestions" onclick="switchTab('suggestions')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        <span>Suggestions</span>
+      </button>
+      <button class="sp-tab" data-tab="birthdays" onclick="switchTab('birthdays')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        <span>Birthdays</span>
+      </button>
+      <button class="sp-tab" data-tab="voice" onclick="switchTab('voice')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
+        <span>Voice Setup</span>
+      </button>
+
+      <div class="sp-nav-group-label">Content</div>
+      <button class="sp-tab" data-tab="autoresponder" onclick="switchTab('autoresponder')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
+        <span>Auto Responders</span>
+      </button>
+      <button class="sp-tab" data-tab="stickymessages" onclick="switchTab('stickymessages')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>
+        <span>Sticky Messages</span>
+      </button>
+      <button class="sp-tab" data-tab="buttonroles" onclick="switchTab('buttonroles')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        <span>Button Roles</span>
+      </button>
+      <button class="sp-tab" data-tab="announcer" onclick="switchTab('announcer')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13"/><path d="M22 2L15 22 11 13 2 9l20-7z"/></svg>
+        <span>Announcer</span>
+      </button>
+
+      <div class="sp-nav-group-label">Economy</div>
+      <button class="sp-tab" data-tab="economyshop" onclick="switchTab('economyshop')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+        <span>Economy Shop</span>
+      </button>
+
+      <div class="sp-nav-group-label">Server</div>
+      <button class="sp-tab" data-tab="serverstats" onclick="switchTab('serverstats')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+        <span>Server Stats</span>
+      </button>
+    </nav>
+
+    <!-- Content Panes -->
+    <div class="sp-body">
+    <!-- Commands Tab -->
+    <div class="sp-pane active" id="tab-commands">
+      <div class="sp-notice" id="cmd-no-bot" style="display:none">⚠️ Add the bot to this server to enable/disable commands.</div>
+      
+      <div class="sp-field-group" style="background:var(--bg-lighter); padding:15px; border-radius:8px; margin-bottom:20px;">
+        <label class="sp-field-label" for="cmd-prefix">Custom Prefix</label>
+        <div class="sp-field-desc" style="margin-bottom:8px;">The bot mainly uses <strong>Slash Commands (/)</strong>. If users type the custom prefix (e.g. <code>!help</code>), the bot will remind them to use slash commands.</div>
+        <input class="sp-input" id="cmd-prefix" type="text" placeholder="e.g. !" maxlength="5">
+      </div>
+
+      <div class="sp-field-label">Command Modules</div>
+      <div class="sp-field-desc" style="margin-bottom:10px;">Toggle which commands are allowed in your server.</div>
+      <div id="commands-list"></div>
+      <button class="sp-save-btn" id="cmd-save-btn" onclick="saveCommands()">Save Changes</button>
+    </div>
+    <!-- Auto Mod Tab -->
+    <div class="sp-pane" id="tab-automod">
+      <div class="sp-notice" id="am-no-bot" style="display:none">⚠️ Add the bot to this server first.</div>
+
+      <!-- Toggle row -->
+      <div class="sp-field-group">
+        <div class="sp-toggle-row">
+          <div>
+            <div class="sp-field-label">Auto Moderation</div>
+            <div class="sp-field-desc">Automatically delete rule-breaking messages.</div>
+          </div>
+          <label class="toggle-switch">
+            <input type="checkbox" id="am-toggle" onchange="saveAutomod()">
+            <span class="toggle-track"></span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Log channel -->
+      <div class="sp-field-group">
+        <label class="sp-field-label" for="am-log">Log Channel ID</label>
+        <div class="sp-field-desc">Paste the channel snowflake ID where mod logs will appear.</div>
+        <input class="sp-input" id="am-log" type="text" placeholder="e.g. 123456789012345678">
+      </div>
+      <button class="sp-save-btn" onclick="saveAutomodLog()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px;display:inline;vertical-align:middle;margin-right:6px"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+        Save Log Channel
+      </button>
+    </div>
+    <!-- Verification Tab -->
+    <div class="sp-pane" id="tab-verification">
+      <div class="sp-notice" id="vf-no-bot" style="display:none">⚠️ Add the bot to this server first.</div>
+      <p class="sp-desc-text">Set the channel and role for the verification system. Click <strong>Send Verification Embed</strong> to post the verify button in that channel.</p>
+
+      <div class="sp-field-group">
+        <label class="sp-field-label" for="vf-channel">Verification Channel ID</label>
+        <div class="sp-field-desc">The channel where the verification embed will be posted.</div>
+        <input class="sp-input" id="vf-channel" type="text" placeholder="e.g. 123456789012345678">
+      </div>
+
+      <div class="sp-field-group">
+        <label class="sp-field-label" for="vf-role">Verified Role ID</label>
+        <div class="sp-field-desc">The role assigned to users after they verify.</div>
+        <input class="sp-input" id="vf-role" type="text" placeholder="e.g. 987654321098765432">
+      </div>
+
+      <div class="sp-vf-actions">
+        <button class="sp-save-btn sp-save-btn--secondary" onclick="saveVerification(false)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px;display:inline;vertical-align:middle;margin-right:6px"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+          Save Config Only
+        </button>
+        <button class="sp-save-btn" onclick="saveVerification(true)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px;display:inline;vertical-align:middle;margin-right:6px"><path d="M22 2L11 13"/><path d="M22 2L15 22 11 13 2 9l20-7z"/></svg>
+          Send Verification Embed
+        </button>
+      </div>
+    </div>
+    
+    <!-- Welcome Tab -->
+    <div class="sp-pane" id="tab-welcome">
+      <div class="sp-notice" id="wel-no-bot" style="display:none">⚠️ Add the bot to this server first.</div>
+      <p class="sp-desc-text">Configure welcome and goodbye messages. You can use <code>{user}</code> and <code>{server}</code> variables in the text.</p>
+      
+      <div class="sp-field-group">
+        <label class="sp-field-label" for="wel-channel">Welcome Channel ID</label>
+        <input class="sp-input" id="wel-channel" type="text" placeholder="e.g. 123456789012345678">
+      </div>
+      <div class="sp-field-group">
+        <label class="sp-field-label" for="wel-msg">Welcome Message</label>
+        <input class="sp-input" id="wel-msg" type="text" placeholder="Welcome {user} to {server}!">
+      </div>
+
+      <div class="sp-field-group">
+        <label class="sp-field-label" for="leave-channel">Goodbye Channel ID</label>
+        <input class="sp-input" id="leave-channel" type="text" placeholder="e.g. 123456789012345678">
+      </div>
+      <div class="sp-field-group">
+        <label class="sp-field-label" for="leave-msg">Goodbye Message</label>
+        <input class="sp-input" id="leave-msg" type="text" placeholder="{user} has left the server.">
+      </div>
+      <button class="sp-save-btn" onclick="saveWelcome()">Save Welcome Settings</button>
+    </div>
+
+    <!-- Leveling Tab -->
+    <div class="sp-pane" id="tab-leveling">
+      <div class="sp-notice" id="lvl-no-bot" style="display:none">⚠️ Add the bot to this server first.</div>
+      <div class="sp-field-group">
+        <div class="sp-toggle-row">
+          <div>
+            <div class="sp-field-label">Leveling System</div>
+            <div class="sp-field-desc">Users earn XP for chatting in the server.</div>
+          </div>
+          <label class="toggle-switch">
+            <input type="checkbox" id="lvl-toggle" onchange="saveLeveling()">
+            <span class="toggle-track"></span>
+          </label>
+        </div>
+      </div>
+      <div class="sp-field-group">
+        <label class="sp-field-label" for="lvl-channel">Level Up Channel ID</label>
+        <div class="sp-field-desc">Leave empty to send level-up messages in the channel where the user chatted.</div>
+        <input class="sp-input" id="lvl-channel" type="text" placeholder="e.g. 123456789012345678">
+        <button class="sp-save-btn" onclick="saveLeveling()">Save Settings</button>
+      </div>
+    </div>
+
+    <!-- Tickets Tab -->
+    <div class="sp-pane" id="tab-tickets">
+      <div class="sp-notice" id="tkt-no-bot" style="display:none">⚠️ Add the bot to this server first.</div>
+      <p class="sp-desc-text">Configure where tickets are created and logged.</p>
+      <div class="sp-field-group">
+        <label class="sp-field-label" for="tkt-cat">Ticket Category ID</label>
+        <div class="sp-field-desc">The category where new ticket channels will be created.</div>
+        <input class="sp-input" id="tkt-cat" type="text" placeholder="e.g. 123456789012345678">
+      </div>
+      <div class="sp-field-group">
+        <label class="sp-field-label" for="tkt-role">Support Role ID</label>
+        <div class="sp-field-desc">The role that can see and answer tickets.</div>
+        <input class="sp-input" id="tkt-role" type="text" placeholder="e.g. 987654321098765432">
+      </div>
+      <div class="sp-field-group">
+        <label class="sp-field-label" for="tkt-log">Ticket Log Channel ID</label>
+        <div class="sp-field-desc">Where transcripts will be sent when a ticket is closed.</div>
+        <input class="sp-input" id="tkt-log" type="text" placeholder="e.g. 123456789012345678">
+      </div>
+      <button class="sp-save-btn" onclick="saveTickets()">Save Ticket Settings</button>
+    </div>
+
+    <!-- Suggestions Tab -->
+    <div class="sp-pane" id="tab-suggestions">
+      <div class="sp-notice" id="sug-no-bot" style="display:none">⚠️ Add the bot to this server first.</div>
+      <div class="sp-field-group">
+        <label class="sp-field-label" for="sug-channel">Suggestion Channel ID</label>
+        <div class="sp-field-desc">Where suggestions will be posted with up/down vote buttons.</div>
+        <input class="sp-input" id="sug-channel" type="text" placeholder="e.g. 123456789012345678">
+        <button class="sp-save-btn" onclick="saveSuggestions()">Save Channel</button>
+      </div>
+    </div>
+
+    <!-- Auto Responders Tab -->
+    <div class="sp-pane" id="tab-autoresponder">
+      <div class="sp-notice" id="ar-no-bot" style="display:none">⚠️ Add the bot to this server first.</div>
+      <p class="sp-desc-text">Create custom text triggers. When a user sends the trigger, the bot will reply with the response.</p>
+      
+      <div class="sp-field-group">
+        <label class="sp-field-label" for="ar-trigger">New Trigger Word/Phrase</label>
+        <input class="sp-input" id="ar-trigger" type="text" placeholder="e.g. !ip">
+        
+        <label class="sp-field-label" for="ar-response" style="margin-top:10px">Response</label>
+        <input class="sp-input" id="ar-response" type="text" placeholder="e.g. play.myserver.com">
+        
+        <button class="sp-save-btn" onclick="addAutoResponder()">Add Auto Responder</button>
+      </div>
+
+      <div class="sp-field-label" style="margin-top: 20px;">Active Responders</div>
+      <div id="ar-list" style="margin-top: 10px; display: flex; flex-direction: column; gap: 10px;">
+        <!-- List populated by JS -->
+      </div>
+    </div>
+
+    <!-- Sticky Messages Tab -->
+    <div class="sp-pane" id="tab-stickymessages">
+      <div class="sp-notice" id="sm-no-bot" style="display:none">⚠️ Add the bot to this server first.</div>
+      <p class="sp-desc-text">A sticky message stays at the bottom of a specific channel. (Max 1 per channel)</p>
+      
+      <div class="sp-field-group">
+        <label class="sp-field-label" for="sm-channel">Channel ID</label>
+        <input class="sp-input" id="sm-channel" type="text" placeholder="e.g. 123456789012345678">
+        
+        <label class="sp-field-label" for="sm-content" style="margin-top:10px">Message Content</label>
+        <input class="sp-input" id="sm-content" type="text" placeholder="Read the rules above!">
+        
+        <button class="sp-save-btn" onclick="addStickyMessage()">Add Sticky Message</button>
+      </div>
+
+      <div class="sp-field-label" style="margin-top: 20px;">Active Sticky Messages</div>
+      <div id="sm-list" style="margin-top: 10px; display: flex; flex-direction: column; gap: 10px;">
+        <!-- List populated by JS -->
+      </div>
+    </div>
+
+    <!-- Voice Setup Tab -->
+    <div class="sp-pane" id="tab-voice">
+      <div class="sp-notice" id="vc-no-bot" style="display:none">⚠️ Add the bot to this server first.</div>
+      <p class="sp-desc-text">Join-to-Create: When users join the Generator Channel, a temporary private voice channel is created for them in the specified Category.</p>
+      
+      <div class="sp-field-group">
+        <label class="sp-field-label" for="vc-gen">Generator Voice Channel ID</label>
+        <input class="sp-input" id="vc-gen" type="text" placeholder="e.g. 123456789012345678">
+      </div>
+      <div class="sp-field-group">
+        <label class="sp-field-label" for="vc-cat">Temporary Channels Category ID</label>
+        <input class="sp-input" id="vc-cat" type="text" placeholder="e.g. 123456789012345678">
+      </div>
+      <button class="sp-save-btn" onclick="saveVoice()">Save Voice Settings</button>
+    </div>
+
+    <!-- Birthdays Tab -->
+    <div class="sp-pane" id="tab-birthdays">
+      <div class="sp-notice" id="bday-no-bot" style="display:none">⚠️ Add the bot to this server first.</div>
+      <p class="sp-desc-text">Announce users' birthdays automatically!</p>
+      
+      <div class="sp-field-group">
+        <label class="sp-field-label" for="bday-channel">Announcement Channel ID</label>
+        <input class="sp-input" id="bday-channel" type="text" placeholder="e.g. 123456789012345678">
+      </div>
+      <div class="sp-field-group">
+        <label class="sp-field-label" for="bday-msg">Birthday Message</label>
+        <div class="sp-field-desc">Use <code>{user}</code> to ping the birthday person.</div>
+        <input class="sp-input" id="bday-msg" type="text" placeholder="Happy Birthday {user}! 🎉">
+      </div>
+      <button class="sp-save-btn" onclick="saveBirthdays()">Save Birthday Settings</button>
+    </div>
+
+    <!-- Button Roles Tab -->
+    <div class="sp-pane" id="tab-buttonroles">
+      <div class="sp-notice" id="br-no-bot" style="display:none">⚠️ Add the bot to this server first.</div>
+      <p class="sp-desc-text">Create an interactive embed panel with buttons that assign roles.</p>
+      
+      <div class="sp-field-group" style="background:var(--bg-lighter); padding:15px; border-radius:8px;">
+        <label class="sp-field-label" for="br-channel">Target Channel ID</label>
+        <input class="sp-input" id="br-channel" type="text" placeholder="e.g. 123456789012345678">
+        
+        <label class="sp-field-label" for="br-title" style="margin-top:10px">Embed Title</label>
+        <input class="sp-input" id="br-title" type="text" placeholder="Reaction Roles">
+
+        <label class="sp-field-label" for="br-desc" style="margin-top:10px">Embed Description</label>
+        <input class="sp-input" id="br-desc" type="text" placeholder="Click a button below to get a role!">
+
+        <hr style="border:0; border-top:1px solid var(--border-color); margin:15px 0;">
+        <div class="sp-field-label">Add a Button</div>
+        <div style="display:flex; gap:10px; margin-top:10px;">
+            <input class="sp-input" id="br-btn-label" type="text" placeholder="Label (e.g. Red Team)" style="flex:1">
+            <input class="sp-input" id="br-btn-role" type="text" placeholder="Role ID" style="flex:1">
+        </div>
+        <button class="sp-save-btn sp-save-btn--secondary" style="margin-top:10px;" onclick="addBtnRoleToDraft()">Add Button to Draft</button>
+
+        <div id="br-draft-list" style="margin-top:15px; display:flex; flex-wrap:wrap; gap:5px;"></div>
+
+        <button class="sp-save-btn" style="margin-top:15px;" onclick="saveAndSendButtonRole()">Save & Send Panel to Discord</button>
+      </div>
+
+      <div class="sp-field-label" style="margin-top: 20px;">Active Panels</div>
+      <div id="br-list" style="margin-top: 10px; display: flex; flex-direction: column; gap: 10px;">
+        <!-- List populated by JS -->
+      </div>
+    </div>
+
+    <!-- Word Filter Tab -->
+    <div class="sp-pane" id="tab-wordfilter">
+      <div class="sp-notice" id="wf-no-bot" style="display:none">⚠️ Add the bot to this server first.</div>
+      <p class="sp-desc-text">Add words that are completely banned from the server. Messages containing these will be deleted automatically.</p>
+      
+      <div class="sp-field-group">
+        <label class="sp-field-label" for="wf-word">New Banned Word</label>
+        <div style="display:flex; gap:10px;">
+            <input class="sp-input" id="wf-word" type="text" placeholder="e.g. badword" style="flex:1">
+            <button class="sp-save-btn" style="width:auto; margin:0;" onclick="addBannedWord()">Add Word</button>
+        </div>
+      </div>
+
+      <div class="sp-field-label" style="margin-top: 20px;">Banned Words</div>
+      <div id="wf-list" style="margin-top: 10px; display: flex; flex-wrap: wrap; gap: 10px;">
+        <!-- List populated by JS -->
+      </div>
+    </div>
+
+    <!-- Server Stats Tab -->
+    <div class="sp-pane" id="tab-serverstats">
+      <div class="sp-notice" id="ss-no-bot" style="display:none">⚠️ Add the bot to this server first.</div>
+      <p class="sp-desc-text">The bot will automatically create locked voice channels at the top of your server to display live member and bot counts.</p>
+      
+      <div class="sp-field-group">
+        <div class="sp-toggle-row">
+          <div>
+            <div class="sp-field-label">Enable Server Stats Channels</div>
+          </div>
+          <label class="toggle-switch">
+            <input type="checkbox" id="ss-toggle" onchange="saveStats()">
+            <span class="toggle-track"></span>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Economy Shop Tab -->
+    <div class="sp-pane" id="tab-economyshop">
+      <div class="sp-notice" id="es-no-bot" style="display:none">⚠️ Add the bot to this server first.</div>
+      <p class="sp-desc-text">Create items that users can buy with their coins to automatically earn Discord roles.</p>
+      
+      <div class="sp-field-group" style="background:var(--bg-lighter); padding:15px; border-radius:8px;">
+        <label class="sp-field-label" for="es-name">Item Name</label>
+        <input class="sp-input" id="es-name" type="text" placeholder="e.g. VIP Role">
+        
+        <label class="sp-field-label" for="es-desc" style="margin-top:10px">Description (Optional)</label>
+        <input class="sp-input" id="es-desc" type="text" placeholder="Gives access to VIP channels.">
+
+        <div style="display:flex; gap:10px; margin-top:10px;">
+            <div style="flex:1">
+                <label class="sp-field-label" for="es-price">Price (Coins)</label>
+                <input class="sp-input" id="es-price" type="number" placeholder="e.g. 5000">
+            </div>
+            <div style="flex:1">
+                <label class="sp-field-label" for="es-role">Role ID to Give</label>
+                <input class="sp-input" id="es-role" type="text" placeholder="e.g. 123456789012345678">
+            </div>
+        </div>
+        
+        <button class="sp-save-btn" style="margin-top:15px;" onclick="addShopItem()">Create Shop Item</button>
+      </div>
+
+      <div class="sp-field-label" style="margin-top: 20px;">Active Shop Items</div>
+      <div id="es-list" style="margin-top: 10px; display: flex; flex-direction: column; gap: 10px;">
+        <!-- List populated by JS -->
+      </div>
+    </div>
+
+    <!-- Warnings Tab -->
+    <div class="sp-pane" id="tab-warnings">
+      <div class="sp-notice" id="warn-no-bot" style="display:none">⚠️ Add the bot to this server first.</div>
+      <p class="sp-desc-text">Manage user warnings. Enter a User ID below to fetch their history.</p>
+      
+      <div class="sp-field-group">
+        <label class="sp-field-label" for="warn-user-id">Search User ID</label>
+        <div style="display:flex; gap:10px;">
+            <input class="sp-input" id="warn-user-id" type="text" placeholder="e.g. 123456789012345678" style="flex:1">
+            <button class="sp-save-btn" style="width:auto; margin:0;" onclick="loadWarnings()">Fetch Warnings</button>
+        </div>
+      </div>
+
+      <div class="sp-field-label" style="margin-top: 20px;">Warning History</div>
+      <div id="warn-list" style="margin-top: 10px; display: flex; flex-direction: column; gap: 10px;">
+        <!-- List populated by JS -->
+        <div style="color:var(--text-muted); font-size:14px;">Enter a User ID to search.</div>
+      </div>
+    </div>
+
+    <!-- Announcer Tab -->
+    <div class="sp-pane" id="tab-announcer">
+      <div class="sp-notice" id="ann-no-bot" style="display:none">⚠️ Add the bot to this server first.</div>
+      <p class="sp-desc-text">Design and dispatch a beautiful embed announcement directly to any channel.</p>
+      
+      <div class="sp-field-group" style="background:var(--bg-lighter); padding:15px; border-radius:8px;">
+        <label class="sp-field-label" for="ann-channel">Target Channel ID</label>
+        <input class="sp-input" id="ann-channel" type="text" placeholder="e.g. 123456789012345678">
+        
+        <label class="sp-field-label" for="ann-title" style="margin-top:10px">Embed Title</label>
+        <input class="sp-input" id="ann-title" type="text" placeholder="Important Announcement!">
+
+        <label class="sp-field-label" for="ann-desc" style="margin-top:10px">Embed Description</label>
+        <textarea class="sp-input" id="ann-desc" rows="4" placeholder="Type your message here..."></textarea>
+
+        <div style="display:flex; gap:10px; margin-top:10px;">
+            <div style="flex:1">
+                <label class="sp-field-label" for="ann-color">Color (Hex)</label>
+                <input class="sp-input" id="ann-color" type="text" placeholder="#5865F2">
+            </div>
+            <div style="flex:1">
+                <label class="sp-field-label" for="ann-img">Image URL (Optional)</label>
+                <input class="sp-input" id="ann-img" type="text" placeholder="https://example.com/img.png">
+            </div>
+        </div>
+
+        <button class="sp-save-btn" style="margin-top:15px; background:var(--primary);" onclick="sendAnnouncement()">Dispatch Announcement</button>
+      </div>
+    </div>
+
+    </div><!-- /.sp-body -->
+  </div><!-- /.sp-inner -->
+</aside>
+
+<!-- Toast container -->
+<div class="toast-container" id="toast-container"></div>
+
+<script>
+  // ---- Mobile Sidebar ----
+  const sidebar   = document.getElementById('dash-sidebar');
+  const overlay   = document.getElementById('sidebar-overlay');
+  const toggleBtn = document.getElementById('sidebar-toggle');
+
+  function openSidebar() {
+    sidebar.classList.add('open');
+    overlay.classList.add('show');
+  }
+
+  function closeSidebar() {
+    sidebar.classList.remove('open');
+    overlay.classList.remove('show');
+  }
+
+  toggleBtn.addEventListener('click', openSidebar);
+  overlay.addEventListener('click', closeSidebar);
+
+  // ---- Toast ----
+  function showToast(message, type = 'info') {
+    const container = document.getElementById('toast-container');
+    const icons = {
+      success: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#57f287" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>`,
+      error:   `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ed4245" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>`,
+      info:    `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5865f2" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>`
+    };
+
+    const toast = document.createElement('div');
+    toast.className = `toast ${type}`;
+    toast.innerHTML = `${icons[type] || icons.info}<span>${message}</span>`;
+    container.appendChild(toast);
+
+    setTimeout(() => {
+      toast.style.opacity = '0';
+      toast.style.transform = 'translateX(20px)';
+      toast.style.transition = 'all 0.3s ease';
+      setTimeout(() => toast.remove(), 300);
+    }, 3000);
+  }
+
+  // ---- Server Panel State ----
+  let _panelGuildId  = null;
+  let _panelHasBot   = false;
+  let _configCache   = {};   // guildId -> config
+  let _disabled      = new Set();
+
+  function openServerPanel(guildId, guildName, guildIcon, hasBot) {
+    _panelGuildId = guildId;
+    _panelHasBot  = hasBot === 'true' || hasBot === true;
+
+    // Header
+    document.getElementById('sp-guild-name').textContent = guildName;
+    document.getElementById('sp-guild-id').textContent   = 'ID: ' + guildId;
+    const iconEl = document.getElementById('sp-guild-icon');
+    if (guildIcon && guildIcon !== 'null') {
+      iconEl.innerHTML = `<img src="https://cdn.discordapp.com/icons/${guildId}/${guildIcon}.png?size=64" onerror="this.parentElement.textContent='${guildName.charAt(0)}'">`;
+    } else {
+      iconEl.textContent = guildName.charAt(0).toUpperCase();
+    }
+
+    switchTab('commands');
+    document.getElementById('server-panel').classList.add('open');
+    document.getElementById('panel-overlay').classList.add('show');
+    document.body.style.overflow = 'hidden';
+    loadGuildConfig(guildId);
+  }
+
+  function closeServerPanel() {
+    document.getElementById('server-panel').classList.remove('open');
+    document.getElementById('panel-overlay').classList.remove('show');
+    document.body.style.overflow = '';
+    _panelGuildId = null;
+  }
+
+  function switchTab(tab) {
+    document.querySelectorAll('.sp-tab').forEach(b => b.classList.toggle('active', b.dataset.tab === tab));
+    document.querySelectorAll('.sp-pane').forEach(p => p.classList.toggle('active', p.id === 'tab-' + tab));
+  }
+
+  async function loadGuildConfig(guildId) {
+    if (_configCache[guildId]) { renderConfig(_configCache[guildId]); return; }
+    document.getElementById('commands-list').innerHTML = '<div class="sp-loading">Loading…</div>';
+    try {
+      const r = await fetch(`/api/guilds/${guildId}/config`);
+      const cfg = await r.json();
+      _configCache[guildId] = cfg;
+      renderConfig(cfg);
+      
+      // Load dynamic lists
+      if (_panelHasBot) {
+        loadAutoResponders();
+        loadStickyMessages();
+        loadButtonRoles();
+        loadBannedWords();
+        loadShopItems();
+      }
+    } catch (e) {
+      document.getElementById('commands-list').innerHTML = '<div style="color:#ff6b6b">Failed to load configuration.</div>';
+    }
+  }
+
+  function renderConfig(cfg) {
+    _disabled = new Set(cfg.disabled || []);
+
+    // ---- Commands ----
+    const noBot = document.getElementById('cmd-no-bot');
+    const saveBtn = document.getElementById('cmd-save-btn');
+    noBot.style.display = _panelHasBot ? 'none' : 'block';
+    saveBtn.style.display = _panelHasBot ? 'block' : 'none';
+
+    document.getElementById('cmd-prefix').value = cfg.prefix || '!';
+    document.getElementById('cmd-prefix').disabled = !_panelHasBot;
+
+    const categories = {};
+    (cfg.commands || []).forEach(cmd => {
+      if (!categories[cmd.category]) categories[cmd.category] = [];
+      categories[cmd.category].push(cmd);
+    });
+
+    const catIcons = { Moderation:'🛡️', Economy:'💰', Admin:'⚙️', Utility:'🔧' };
+    let html = '';
+    for (const [cat, cmds] of Object.entries(categories)) {
+      html += `<div class="cmd-category"><div class="cmd-cat-label">${catIcons[cat]||'📦'} ${cat}</div>`;
+      cmds.forEach(cmd => {
+        const on = !_disabled.has(cmd.name);
+        const dis = _panelHasBot ? '' : 'disabled';
+        html += `<div class="cmd-row">
+          <div class="cmd-info">
+            <span class="cmd-name">/${cmd.name}</span>
+            <span class="cmd-desc">${cmd.description}</span>
+          </div>
+          <label class="toggle-switch">
+            <input type="checkbox" class="cmd-toggle" data-cmd="${cmd.name}" ${on?'checked':''} ${dis}>
+            <span class="toggle-track"></span>
+          </label>
+        </div>`;
+      });
+      html += '</div>';
+    }
+    document.getElementById('commands-list').innerHTML = html || '<p style="color:var(--text-muted)">No commands found.</p>';
+
+    // ---- Auto Mod ----
+    document.getElementById('am-no-bot').style.display  = _panelHasBot ? 'none' : 'block';
+    document.getElementById('am-toggle').checked        = cfg.automod?.enabled || false;
+    document.getElementById('am-toggle').disabled       = !_panelHasBot;
+    document.getElementById('am-log').value             = cfg.automod?.logChannelId || '';
+    document.getElementById('am-log').disabled          = !_panelHasBot;
+
+    // ---- Verification ----
+    document.getElementById('vf-no-bot').style.display  = _panelHasBot ? 'none' : 'block';
+    document.getElementById('vf-channel').value         = cfg.verification?.channelId || '';
+    document.getElementById('vf-role').value            = cfg.verification?.roleId    || '';
+    document.getElementById('vf-channel').disabled      = !_panelHasBot;
+    document.getElementById('vf-role').disabled         = !_panelHasBot;
+
+    // ---- Welcome ----
+    document.getElementById('wel-no-bot').style.display = _panelHasBot ? 'none' : 'block';
+    document.getElementById('wel-channel').value        = cfg.welcome?.welcomeChannelId || '';
+    document.getElementById('wel-msg').value            = cfg.welcome?.welcomeMessage   || '';
+    document.getElementById('leave-channel').value      = cfg.welcome?.leaveChannelId   || '';
+    document.getElementById('leave-msg').value          = cfg.welcome?.leaveMessage     || '';
+    ['wel-channel','wel-msg','leave-channel','leave-msg'].forEach(id => document.getElementById(id).disabled = !_panelHasBot);
+
+    // ---- Leveling ----
+    document.getElementById('lvl-no-bot').style.display = _panelHasBot ? 'none' : 'block';
+    document.getElementById('lvl-toggle').checked       = cfg.leveling?.enabled || false;
+    document.getElementById('lvl-channel').value        = cfg.leveling?.levelUpChannelId || '';
+    document.getElementById('lvl-toggle').disabled      = !_panelHasBot;
+    document.getElementById('lvl-channel').disabled     = !_panelHasBot;
+
+    // ---- Tickets ----
+    document.getElementById('tkt-no-bot').style.display = _panelHasBot ? 'none' : 'block';
+    document.getElementById('tkt-cat').value            = cfg.tickets?.categoryId || '';
+    document.getElementById('tkt-role').value           = cfg.tickets?.supportRoleId || '';
+    document.getElementById('tkt-log').value            = cfg.tickets?.logChannelId || '';
+    ['tkt-cat','tkt-role','tkt-log'].forEach(id => document.getElementById(id).disabled = !_panelHasBot);
+
+    // ---- Suggestions ----
+    document.getElementById('sug-no-bot').style.display = _panelHasBot ? 'none' : 'block';
+    document.getElementById('sug-channel').value        = cfg.suggestions?.channelId || '';
+    document.getElementById('sug-channel').disabled     = !_panelHasBot;
+
+    // Disabling inputs for AR/SM if no bot
+    document.getElementById('ar-no-bot').style.display = _panelHasBot ? 'none' : 'block';
+    document.getElementById('sm-no-bot').style.display = _panelHasBot ? 'none' : 'block';
+    ['ar-trigger','ar-response','sm-channel','sm-content'].forEach(id => document.getElementById(id).disabled = !_panelHasBot);
+
+    // ---- Voice ----
+    document.getElementById('vc-no-bot').style.display = _panelHasBot ? 'none' : 'block';
+    document.getElementById('vc-gen').value            = cfg.voice?.voiceGeneratorId || '';
+    document.getElementById('vc-cat').value            = cfg.voice?.voiceCategoryId  || '';
+    ['vc-gen','vc-cat'].forEach(id => document.getElementById(id).disabled = !_panelHasBot);
+
+    // ---- Birthdays ----
+    document.getElementById('bday-no-bot').style.display = _panelHasBot ? 'none' : 'block';
+    document.getElementById('bday-channel').value        = cfg.birthdays?.birthdayChannelId || '';
+    document.getElementById('bday-msg').value            = cfg.birthdays?.birthdayMessage   || '';
+    ['bday-channel','bday-msg'].forEach(id => document.getElementById(id).disabled = !_panelHasBot);
+
+    // ---- Button Roles ----
+    document.getElementById('br-no-bot').style.display = _panelHasBot ? 'none' : 'block';
+    ['br-channel','br-title','br-desc','br-btn-label','br-btn-role'].forEach(id => document.getElementById(id).disabled = !_panelHasBot);
+
+    // ---- Word Filter ----
+    document.getElementById('wf-no-bot').style.display = _panelHasBot ? 'none' : 'block';
+    document.getElementById('wf-word').disabled        = !_panelHasBot;
+
+    // ---- Server Stats ----
+    document.getElementById('ss-no-bot').style.display = _panelHasBot ? 'none' : 'block';
+    document.getElementById('ss-toggle').checked       = cfg.stats?.enabled || false;
+    document.getElementById('ss-toggle').disabled      = !_panelHasBot;
+
+    // ---- Economy Shop ----
+    document.getElementById('es-no-bot').style.display = _panelHasBot ? 'none' : 'block';
+    ['es-name','es-desc','es-price','es-role'].forEach(id => document.getElementById(id).disabled = !_panelHasBot);
+
+    // ---- Warnings ----
+    document.getElementById('warn-no-bot').style.display = _panelHasBot ? 'none' : 'block';
+    document.getElementById('warn-user-id').disabled = !_panelHasBot;
+
+    // ---- Announcer ----
+    document.getElementById('ann-no-bot').style.display = _panelHasBot ? 'none' : 'block';
+    ['ann-channel','ann-title','ann-desc','ann-color','ann-img'].forEach(id => document.getElementById(id).disabled = !_panelHasBot);
+  }
+
+  async function saveCommands() {
+    const toggles = document.querySelectorAll('.cmd-toggle');
+    const disabled = [];
+    toggles.forEach(t => { if (!t.checked) disabled.push(t.dataset.cmd); });
+    
+    const prefixInput = document.getElementById('cmd-prefix').value.trim() || '!';
+
+    const btn = document.getElementById('cmd-save-btn');
+    btn.disabled = true; btn.textContent = 'Saving…';
+    try {
+      const r = await fetch(`/api/guilds/${_panelGuildId}/commands`, {
+        method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({ disabledCommands: disabled, prefix: prefixInput })
+      });
+      const d = await r.json();
+      if (r.ok) { _configCache[_panelGuildId] = null; showToast('Command settings saved!','success'); }
+      else showToast(d.error||'Failed to save.','error');
+    } catch(e) { showToast('Network error.','error'); }
+    btn.disabled = false; btn.textContent = 'Save Changes';
+  }
+
+  async function saveAutomod() {
+    const enabled = document.getElementById('am-toggle').checked;
+    try {
+      const r = await fetch(`/api/guilds/${_panelGuildId}/automod`, {
+        method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({ enabled })
+      });
+      const d = await r.json();
+      if (r.ok) { _configCache[_panelGuildId] = null; showToast(enabled?'Auto Mod enabled!':'Auto Mod disabled.', enabled?'success':'info'); }
+      else showToast(d.error||'Failed.','error');
+    } catch(e) { showToast('Network error.','error'); }
+  }
+
+  async function saveAutomodLog() {
+    const logChannelId = document.getElementById('am-log').value.trim();
+    try {
+      const enabled = document.getElementById('am-toggle').checked;
+      const r = await fetch(`/api/guilds/${_panelGuildId}/automod`, {
+        method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({ enabled, logChannelId })
+      });
+      const d = await r.json();
+      if (r.ok) { _configCache[_panelGuildId] = null; showToast('Log channel saved!','success'); }
+      else showToast(d.error||'Failed.','error');
+    } catch(e) { showToast('Network error.','error'); }
+  }
+
+  async function saveVerification(sendEmbed) {
+    const channelId = document.getElementById('vf-channel').value.trim();
+    const roleId    = document.getElementById('vf-role').value.trim();
+    if (!channelId || !roleId) { showToast('Channel ID and Role ID are required.','error'); return; }
+    try {
+      // Always save config first
+      const r = await fetch(`/api/guilds/${_panelGuildId}/verification`, {
+        method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({ channelId, roleId, sendEmbed: !!sendEmbed })
+      });
+      const d = await r.json();
+      if (r.ok) {
+        _configCache[_panelGuildId] = null;
+        showToast(sendEmbed ? 'Verification embed sent! ✅' : 'Config saved!', 'success');
+      } else {
+        showToast(d.error || 'Failed.', 'error');
+      }
+    } catch(e) { showToast('Network error.','error'); }
+  }
+
+  async function saveWelcome() {
+    const data = {
+      welcomeChannelId: document.getElementById('wel-channel').value.trim(),
+      welcomeMessage:   document.getElementById('wel-msg').value.trim(),
+      leaveChannelId:   document.getElementById('leave-channel').value.trim(),
+      leaveMessage:     document.getElementById('leave-msg').value.trim()
+    };
+    try {
+      const r = await fetch(`/api/guilds/${_panelGuildId}/welcome`, {
+        method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(data)
+      });
+      if (r.ok) { _configCache[_panelGuildId] = null; showToast('Welcome settings saved!','success'); }
+      else showToast('Failed to save welcome settings.','error');
+    } catch(e) { showToast('Network error.','error'); }
+  }
+
+  async function saveLeveling() {
+    const data = {
+      enabled: document.getElementById('lvl-toggle').checked,
+      levelUpChannelId: document.getElementById('lvl-channel').value.trim()
+    };
+    try {
+      const r = await fetch(`/api/guilds/${_panelGuildId}/leveling`, {
+        method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(data)
+      });
+      if (r.ok) { _configCache[_panelGuildId] = null; showToast('Leveling settings saved!','success'); }
+      else showToast('Failed to save leveling settings.','error');
+    } catch(e) { showToast('Network error.','error'); }
+  }
+
+  async function saveTickets() {
+    const data = {
+      categoryId:    document.getElementById('tkt-cat').value.trim(),
+      supportRoleId: document.getElementById('tkt-role').value.trim(),
+      logChannelId:  document.getElementById('tkt-log').value.trim()
+    };
+    try {
+      const r = await fetch(`/api/guilds/${_panelGuildId}/tickets`, {
+        method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(data)
+      });
+      if (r.ok) { _configCache[_panelGuildId] = null; showToast('Ticket settings saved!','success'); }
+      else showToast('Failed to save ticket settings.','error');
+    } catch(e) { showToast('Network error.','error'); }
+  }
+
+  async function saveSuggestions() {
+    const data = { channelId: document.getElementById('sug-channel').value.trim() };
+    try {
+      const r = await fetch(`/api/guilds/${_panelGuildId}/suggestions`, {
+        method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(data)
+      });
+      if (r.ok) { _configCache[_panelGuildId] = null; showToast('Suggestion channel saved!','success'); }
+      else showToast('Failed to save suggestion settings.','error');
+    } catch(e) { showToast('Network error.','error'); }
+  }
+
+  // ---- Dynamic Lists ----
+  async function loadAutoResponders() {
+    try {
+      const r = await fetch(`/api/guilds/${_panelGuildId}/autoresponders`);
+      const data = await r.json();
+      const list = document.getElementById('ar-list');
+      list.innerHTML = data.map(ar => `
+        <div class="sp-field-group" style="display:flex; justify-content:space-between; align-items:center; margin:0; padding:12px;">
+          <div>
+            <strong>${ar.trigger}</strong><br>
+            <span style="color:var(--text-muted); font-size:12px;">${ar.response}</span>
+          </div>
+          <button style="background:var(--error); border:none; padding:6px 12px; border-radius:4px; color:white; cursor:pointer;" onclick="deleteAutoResponder('${ar._id}')">Delete</button>
+        </div>
+      `).join('') || '<div style="color:var(--text-muted); font-size:14px;">No auto responders yet.</div>';
+    } catch(e) { console.error('Failed to load ARs'); }
+  }
+
+  async function addAutoResponder() {
+    const trigger = document.getElementById('ar-trigger').value.trim();
+    const response = document.getElementById('ar-response').value.trim();
+    if (!trigger || !response) return showToast('Trigger and response are required.', 'error');
+    try {
+      const r = await fetch(`/api/guilds/${_panelGuildId}/autoresponders`, {
+        method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ trigger, response })
+      });
+      if (r.ok) {
+        document.getElementById('ar-trigger').value = '';
+        document.getElementById('ar-response').value = '';
+        showToast('Auto responder added!','success');
+        loadAutoResponders();
+      } else showToast('Failed to add.','error');
+    } catch(e) { showToast('Network error.','error'); }
+  }
+
+  async function deleteAutoResponder(id) {
+    try {
+      const r = await fetch(`/api/guilds/${_panelGuildId}/autoresponders/${id}`, { method: 'DELETE' });
+      if (r.ok) { showToast('Deleted!','info'); loadAutoResponders(); }
+    } catch(e) { showToast('Network error.','error'); }
+  }
+
+  async function loadStickyMessages() {
+    try {
+      const r = await fetch(`/api/guilds/${_panelGuildId}/stickymessages`);
+      const data = await r.json();
+      const list = document.getElementById('sm-list');
+      list.innerHTML = data.map(sm => `
+        <div class="sp-field-group" style="display:flex; justify-content:space-between; align-items:center; margin:0; padding:12px;">
+          <div>
+            <strong>Channel: ${sm.channelId}</strong><br>
+            <span style="color:var(--text-muted); font-size:12px;">${sm.content}</span>
+          </div>
+          <button style="background:var(--error); border:none; padding:6px 12px; border-radius:4px; color:white; cursor:pointer;" onclick="deleteStickyMessage('${sm._id}')">Delete</button>
+        </div>
+      `).join('') || '<div style="color:var(--text-muted); font-size:14px;">No sticky messages yet.</div>';
+    } catch(e) { console.error('Failed to load sticky messages'); }
+  }
+
+  async function addStickyMessage() {
+    const channelId = document.getElementById('sm-channel').value.trim();
+    const content = document.getElementById('sm-content').value.trim();
+    if (!channelId || !content) return showToast('Channel ID and content are required.', 'error');
+    try {
+      const r = await fetch(`/api/guilds/${_panelGuildId}/stickymessages`, {
+        method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ channelId, content })
+      });
+      if (r.ok) {
+        document.getElementById('sm-channel').value = '';
+        document.getElementById('sm-content').value = '';
+        showToast('Sticky message added!','success');
+        loadStickyMessages();
+      } else showToast('Failed to add.','error');
+    } catch(e) { showToast('Network error.','error'); }
+  }
+
+  async function deleteStickyMessage(id) {
+    try {
+      const r = await fetch(`/api/guilds/${_panelGuildId}/stickymessages/${id}`, { method: 'DELETE' });
+      if (r.ok) { showToast('Deleted!','info'); loadStickyMessages(); }
+    } catch(e) { showToast('Network error.','error'); }
+  }
+
+  // ---- Voice & Birthdays ----
+  async function saveVoice() {
+    const data = {
+      voiceGeneratorId: document.getElementById('vc-gen').value.trim(),
+      voiceCategoryId:  document.getElementById('vc-cat').value.trim()
+    };
+    try {
+      const r = await fetch(`/api/guilds/${_panelGuildId}/voice`, {
+        method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(data)
+      });
+      if (r.ok) { _configCache[_panelGuildId] = null; showToast('Voice settings saved!','success'); }
+      else showToast('Failed to save voice settings.','error');
+    } catch(e) { showToast('Network error.','error'); }
+  }
+
+  async function saveBirthdays() {
+    const data = {
+      birthdayChannelId: document.getElementById('bday-channel').value.trim(),
+      birthdayMessage:   document.getElementById('bday-msg').value.trim()
+    };
+    try {
+      const r = await fetch(`/api/guilds/${_panelGuildId}/birthdays`, {
+        method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(data)
+      });
+      if (r.ok) { _configCache[_panelGuildId] = null; showToast('Birthday settings saved!','success'); }
+      else showToast('Failed to save birthday settings.','error');
+    } catch(e) { showToast('Network error.','error'); }
+  }
+
+  // ---- Button Roles ----
+  let _brDraftButtons = [];
+  
+  function addBtnRoleToDraft() {
+    const label = document.getElementById('br-btn-label').value.trim();
+    const roleId = document.getElementById('br-btn-role').value.trim();
+    if (!label || !roleId) return showToast('Label and Role ID required.', 'error');
+    if (_brDraftButtons.length >= 5) return showToast('Max 5 buttons per panel.', 'error');
+    
+    _brDraftButtons.push({ label, roleId, style: 1 });
+    document.getElementById('br-btn-label').value = '';
+    document.getElementById('br-btn-role').value = '';
+    renderDraftButtons();
+  }
+
+  function renderDraftButtons() {
+    const list = document.getElementById('br-draft-list');
+    list.innerHTML = _brDraftButtons.map((btn, i) => `
+      <span style="display:inline-block; background:var(--primary); color:white; padding:4px 8px; border-radius:4px; font-size:12px;">
+        ${btn.label} <span style="cursor:pointer; margin-left:5px; font-weight:bold" onclick="_brDraftButtons.splice(${i},1); renderDraftButtons()">×</span>
+      </span>
+    `).join('');
+  }
+
+  async function saveAndSendButtonRole() {
+    const channelId = document.getElementById('br-channel').value.trim();
+    const title = document.getElementById('br-title').value.trim();
+    const description = document.getElementById('br-desc').value.trim();
+    
+    if (!channelId || !_brDraftButtons.length) return showToast('Channel ID and at least 1 button required.', 'error');
+    
+    try {
+      // 1. Save panel to DB
+      const r1 = await fetch(`/api/guilds/${_panelGuildId}/buttonroles`, {
+        method:'POST', headers:{'Content-Type':'application/json'}, 
+        body: JSON.stringify({ channelId, title, description, buttons: _brDraftButtons })
+      });
+      
+      if (!r1.ok) throw new Error('Failed to save panel to DB');
+      const data = await r1.json();
+      
+      // 2. Trigger send to Discord
+      showToast('Dispatching to Discord...', 'info');
+      const r2 = await fetch(`/api/guilds/${_panelGuildId}/buttonroles/${data.panel._id}/send`, { method:'POST' });
+      
+      if (r2.ok) {
+        showToast('Panel sent successfully!', 'success');
+        _brDraftButtons = [];
+        renderDraftButtons();
+        document.getElementById('br-channel').value = '';
+        loadButtonRoles();
+      } else {
+        showToast('Failed to send to Discord. Check Bot permissions.', 'error');
+      }
+    } catch(e) {
+      showToast(e.message || 'Error processing request.', 'error');
+    }
+  }
+
+  async function loadButtonRoles() {
+    try {
+      const r = await fetch(`/api/guilds/${_panelGuildId}/buttonroles`);
+      const data = await r.json();
+      const list = document.getElementById('br-list');
+      list.innerHTML = data.map(p => `
+        <div class="sp-field-group" style="display:flex; justify-content:space-between; align-items:center; margin:0; padding:12px;">
+          <div>
+            <strong>${p.title}</strong> in <span style="color:var(--text-muted); font-size:12px;">${p.channelId}</span><br>
+            <span style="color:var(--text-muted); font-size:12px;">${p.buttons.length} buttons attached.</span>
+          </div>
+          <button style="background:var(--error); border:none; padding:6px 12px; border-radius:4px; color:white; cursor:pointer;" onclick="deleteButtonRole('${p._id}')">Delete</button>
+        </div>
+      `).join('') || '<div style="color:var(--text-muted); font-size:14px;">No active panels.</div>';
+    } catch(e) { console.error('Failed to load button roles'); }
+  }
+
+  async function deleteButtonRole(id) {
+    try {
+      const r = await fetch(`/api/guilds/${_panelGuildId}/buttonroles/${id}`, { method: 'DELETE' });
+      if (r.ok) { showToast('Deleted from database!', 'info'); loadButtonRoles(); }
+    } catch(e) { showToast('Network error.', 'error'); }
+  }
+
+  // ---- Word Filter ----
+  async function loadBannedWords() {
+    try {
+      const r = await fetch(`/api/guilds/${_panelGuildId}/bannedwords`);
+      const data = await r.json();
+      const list = document.getElementById('wf-list');
+      list.innerHTML = data.map(bw => `
+        <span style="display:inline-block; background:var(--error); color:white; padding:4px 10px; border-radius:15px; font-size:13px; font-weight:500;">
+          ${bw.word} <span style="cursor:pointer; margin-left:5px;" onclick="deleteBannedWord('${bw._id}')">×</span>
+        </span>
+      `).join('') || '<div style="color:var(--text-muted); font-size:14px;">No banned words.</div>';
+    } catch(e) { console.error('Failed to load banned words'); }
+  }
+
+  async function addBannedWord() {
+    const word = document.getElementById('wf-word').value.trim();
+    if (!word) return showToast('Word required.', 'error');
+    try {
+      const r = await fetch(`/api/guilds/${_panelGuildId}/bannedwords`, {
+        method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ word })
+      });
+      if (r.ok) {
+        document.getElementById('wf-word').value = '';
+        showToast('Banned word added!','success');
+        loadBannedWords();
+      } else showToast('Failed to add.','error');
+    } catch(e) { showToast('Network error.','error'); }
+  }
+
+  async function deleteBannedWord(id) {
+    try {
+      const r = await fetch(`/api/guilds/${_panelGuildId}/bannedwords/${id}`, { method: 'DELETE' });
+      if (r.ok) { showToast('Deleted!','info'); loadBannedWords(); }
+    } catch(e) { showToast('Network error.','error'); }
+  }
+
+  // ---- Server Stats ----
+  async function saveStats() {
+    const enabled = document.getElementById('ss-toggle').checked;
+    try {
+      const r = await fetch(`/api/guilds/${_panelGuildId}/stats`, {
+        method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ enabled })
+      });
+      if (r.ok) { _configCache[_panelGuildId] = null; showToast('Server Stats settings saved!','success'); }
+      else showToast('Failed to save stats settings.','error');
+    } catch(e) { showToast('Network error.','error'); }
+  }
+
+  // ---- Economy Shop ----
+  async function loadShopItems() {
+    try {
+      const r = await fetch(`/api/guilds/${_panelGuildId}/shopitems`);
+      const data = await r.json();
+      const list = document.getElementById('es-list');
+      list.innerHTML = data.map(item => `
+        <div class="sp-field-group" style="display:flex; justify-content:space-between; align-items:center; margin:0; padding:12px;">
+          <div>
+            <strong>${item.name}</strong> - 🪙 ${item.price}<br>
+            <span style="color:var(--text-muted); font-size:12px;">Role ID: ${item.roleId} | ${item.description}</span>
+          </div>
+          <button style="background:var(--error); border:none; padding:6px 12px; border-radius:4px; color:white; cursor:pointer;" onclick="deleteShopItem('${item._id}')">Delete</button>
+        </div>
+      `).join('') || '<div style="color:var(--text-muted); font-size:14px;">No shop items yet.</div>';
+    } catch(e) { console.error('Failed to load shop items'); }
+  }
+
+  async function addShopItem() {
+    const name = document.getElementById('es-name').value.trim();
+    const desc = document.getElementById('es-desc').value.trim();
+    const price = document.getElementById('es-price').value.trim();
+    const roleId = document.getElementById('es-role').value.trim();
+    if (!name || !price || !roleId) return showToast('Name, price, and roleId required.', 'error');
+    
+    try {
+      const r = await fetch(`/api/guilds/${_panelGuildId}/shopitems`, {
+        method:'POST', headers:{'Content-Type':'application/json'}, 
+        body: JSON.stringify({ name, description: desc, price: Number(price), roleId })
+      });
+      if (r.ok) {
+        document.getElementById('es-name').value = '';
+        document.getElementById('es-desc').value = '';
+        document.getElementById('es-price').value = '';
+        document.getElementById('es-role').value = '';
+        showToast('Shop item added!','success');
+        loadShopItems();
+      } else showToast('Failed to add.','error');
+    } catch(e) { showToast('Network error.','error'); }
+  }
+
+  async function deleteShopItem(id) {
+    try {
+      const r = await fetch(`/api/guilds/${_panelGuildId}/shopitems/${id}`, { method: 'DELETE' });
+      if (r.ok) { showToast('Deleted!','info'); loadShopItems(); }
+    } catch(e) { showToast('Network error.','error'); }
+  }
+
+  // ---- Warnings ----
+  async function loadWarnings() {
+    const userId = document.getElementById('warn-user-id').value.trim();
+    if (!userId) return showToast('Enter a User ID first.', 'error');
+    
+    try {
+      const r = await fetch(`/api/guilds/${_panelGuildId}/warnings?userId=${userId}`);
+      const data = await r.json();
+      const list = document.getElementById('warn-list');
+      
+      list.innerHTML = data.map(w => `
+        <div class="sp-field-group" style="display:flex; justify-content:space-between; align-items:center; margin:0; padding:12px; background:var(--bg-lighter);">
+          <div>
+            <strong>Reason:</strong> ${w.reason}<br>
+            <span style="color:var(--text-muted); font-size:12px;">Mod: ${w.moderatorId} | Date: ${new Date(w.timestamp).toLocaleString()}</span>
+          </div>
+          <button style="background:var(--error); border:none; padding:6px 12px; border-radius:4px; color:white; cursor:pointer;" onclick="deleteWarning('${w._id}')">Pardon (Delete)</button>
+        </div>
+      `).join('') || '<div style="color:var(--success); font-size:14px;">No warnings found for this user! 🎉</div>';
+    } catch(e) { console.error('Failed to load warnings'); }
+  }
+
+  async function deleteWarning(id) {
+    try {
+      const r = await fetch(`/api/guilds/${_panelGuildId}/warnings/${id}`, { method: 'DELETE' });
+      if (r.ok) { showToast('Warning deleted!','info'); loadWarnings(); }
+    } catch(e) { showToast('Network error.','error'); }
+  }
+
+  // ---- Announcer ----
+  async function sendAnnouncement() {
+    const channelId = document.getElementById('ann-channel').value.trim();
+    const title = document.getElementById('ann-title').value.trim();
+    const description = document.getElementById('ann-desc').value.trim();
+    const color = document.getElementById('ann-color').value.trim();
+    const imageUrl = document.getElementById('ann-img').value.trim();
+
+    if (!channelId || !title || !description) return showToast('Channel, Title, and Description required.', 'error');
+
+    showToast('Dispatching announcement...', 'info');
+    try {
+      const r = await fetch(`/api/guilds/${_panelGuildId}/announcer/send`, {
+        method:'POST', headers:{'Content-Type':'application/json'}, 
+        body: JSON.stringify({ channelId, title, description, color, imageUrl })
+      });
+      
+      if (r.ok) {
+        showToast('Announcement sent to Discord! 🚀', 'success');
+        document.getElementById('ann-channel').value = '';
+        document.getElementById('ann-title').value = '';
+        document.getElementById('ann-desc').value = '';
+        document.getElementById('ann-color').value = '';
+        document.getElementById('ann-img').value = '';
+      } else {
+        showToast('Failed to send. Check bot permissions.', 'error');
+      }
+    } catch(e) {
+      showToast('Error processing request.', 'error');
+    }
+  }
+</script>
+
+</body>
+</html>

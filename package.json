@@ -1,0 +1,41 @@
+{
+  "name": "zoro-v3",
+  "version": "1.0.0",
+  "description": "Multi-purpose Discord bot",
+  "main": "index.js",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "scripts": {
+    "start": "concurrently \"node index.js\" \"node dashboard.js\"",
+    "dev": "nodemon index.js",
+    "dashboard": "node dashboard.js"
+  },
+  "dependencies": {
+    "@discordjs/voice": "^0.19.2",
+    "@distube/soundcloud": "^2.0.4",
+    "@distube/youtube": "^1.0.4",
+    "@distube/ytdl-core": "^4.16.12",
+    "axios": "^1.15.2",
+    "concurrently": "^9.2.1",
+    "discord.js": "^14.26.3",
+    "distube": "^5.2.3",
+    "dotenv": "^17.4.2",
+    "ejs": "^5.0.2",
+    "express": "^5.2.1",
+    "express-session": "^1.19.0",
+    "ffmpeg-static": "^5.3.0",
+    "figlet": "^1.11.0",
+    "libsodium-wrappers": "^0.8.4",
+    "mongoose": "^9.6.1",
+    "opusscript": "^0.1.1",
+    "passport": "^0.7.0",
+    "passport-discord": "^0.1.4",
+    "play-dl": "^1.9.7",
+    "tweetnacl": "^1.0.3",
+    "weather-js": "^2.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14"
+  }
+}
